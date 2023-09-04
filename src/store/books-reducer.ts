@@ -1,29 +1,35 @@
 import {Dispatch} from "redux";
-import {PizzaApi, Pizzas} from "../api/api";
+import {BooksApi, BooksItem} from "../api/api";
 
-const initialState = [] as Pizzas[]
-export type BooksState  = Pizzas[]
+const initialState = {
+    books: [] as BooksItem[],
+    totalCount: 0
+}
+export type BooksState  = typeof initialState
 
 export type ActionBooksType =
     | ReturnType<typeof getBooksAC>
 
 export const booksReducer = (state: BooksState = initialState, action: ActionBooksType): BooksState => {
+    debugger
     switch (action.type) {
-        case "GET-PIZZAS":
-            return action.pizzas
+        case "GET-BOOKS":
+            return {...state, totalCount: action.totalCount, books: action.books}
         default:
             return state
     }
 }
 
 
-export const getBooksAC = (pizzas: any) => (
-    {type: 'GET-PIZZAS', pizzas} as const
+export const getBooksAC = (books: BooksItem[], totalCount: number) => (
+    {type: 'GET-BOOKS', books, totalCount} as const
 )
 
-export const GetBooksTC = () => (dispatch: Dispatch<ActionBooksType>) => {
-    PizzaApi.getPizzas()
+export const GetBooksTC = (title: string) => (dispatch: Dispatch<ActionBooksType>) => {
+    BooksApi.getBooks(title)
         .then(res => {
-            dispatch(getBooksAC(res.data))
+            debugger
+            console.log(res.data)
+            dispatch(getBooksAC(res.data.items, res.data.totalItems))
         })
 }

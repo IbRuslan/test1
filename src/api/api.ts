@@ -2,28 +2,118 @@ import axios from "axios";
 
 
 const instance = axios.create({
-    baseURL: 'https://0e7b2c01e3ad5556.mokky.dev',
-    withCredentials: true
+    baseURL: 'https://www.googleapis.com/books/v1/',
 })
 
-export type Pizzas = {
-	id: number;
-	imageUrl: string;
+export type ResponseBooks = {
+	kind: string;
+	totalItems: number;
+	items: BooksItem[];
+}
+
+export type BooksItem = {
+	kind: string;
+	id: string;
+	etag: string;
+	selfLink: string;
+	volumeInfo: RootObjectVolumeInfo;
+	saleInfo: RootObjectSaleInfo;
+	accessInfo: RootObjectAccessInfo;
+	searchInfo: RootObjectSearchInfo;
+}
+export type RootObjectVolumeInfoIndustryIdentifiers = {
+	type: string;
+	identifier: string;
+}
+export type RootObjectVolumeInfoReadingModes = {
+	text: boolean;
+	image: boolean;
+}
+export type RootObjectVolumeInfoPanelizationSummary = {
+	containsEpubBubbles: boolean;
+	containsImageBubbles: boolean;
+}
+export type RootObjectVolumeInfoImageLinks = {
+	smallThumbnail: string;
+	thumbnail: string;
+}
+export type RootObjectVolumeInfo = {
 	title: string;
-	types: number[];
-	sizes: number[];
-	price: number;
-	category: number;
-	rating: number;
+	subtitle: string;
+	authors: string[];
+	publisher: string;
+	publishedDate: string;
+	description: string;
+	industryIdentifiers: RootObjectVolumeInfoIndustryIdentifiers[];
+	readingModes: RootObjectVolumeInfoReadingModes;
+	pageCount: number;
+	printType: string;
+	categories: string[];
+	maturityRating: string;
+	allowAnonLogging: boolean;
+	contentVersion: string;
+	panelizationSummary: RootObjectVolumeInfoPanelizationSummary;
+	imageLinks: RootObjectVolumeInfoImageLinks;
+	language: string;
+	previewLink: string;
+	infoLink: string;
+	canonicalVolumeLink: string;
+}
+export type RootObjectSaleInfoListPrice = {
+	amount: number;
+	currencyCode: string;
+}
+export type RootObjectSaleInfoRetailPrice = {
+	amount: number;
+	currencyCode: string;
+}
+export type RootObjectSaleInfoOffersListPrice = {
+	amountInMicros: number;
+	currencyCode: string;
+}
+export type RootObjectSaleInfoOffersRetailPrice = {
+	amountInMicros: number;
+	currencyCode: string;
+}
+export type RootObjectSaleInfoOffers = {
+	finskyOfferType: number;
+	listPrice: RootObjectSaleInfoOffersListPrice;
+	retailPrice: RootObjectSaleInfoOffersRetailPrice;
+}
+export type RootObjectSaleInfo = {
+	country: string;
+	saleability: string;
+	isEbook: boolean;
+	listPrice: RootObjectSaleInfoListPrice;
+	retailPrice: RootObjectSaleInfoRetailPrice;
+	buyLink: string;
+	offers: RootObjectSaleInfoOffers[];
+}
+export type RootObjectAccessInfoEpub = {
+	isAvailable: boolean;
+}
+export type RootObjectAccessInfoPdf = {
+	isAvailable: boolean;
+}
+export type RootObjectAccessInfo = {
+	country: string;
+	viewability: string;
+	embeddable: boolean;
+	publicDomain: boolean;
+	textToSpeechPermission: string;
+	epub: RootObjectAccessInfoEpub;
+	pdf: RootObjectAccessInfoPdf;
+	webReaderLink: string;
+	accessViewStatus: string;
+	quoteSharingAllowed: boolean;
+}
+export type RootObjectSearchInfo = {
+	textSnippet: string;
 }
 
-export type GetPizzasType = {
-    pizza: Pizzas[]
-}
 
-
-export const PizzaApi = {
-    getPizzas() {
-        return instance.get<GetPizzasType>('/items')
+export const BooksApi = {
+    getBooks(title:string) {
+        return instance.get<ResponseBooks>(`volumes?q=intitle:${title}&key=AIzaSyBRqmafvSVUByRtugHGCkQOsEfaw58VgzU`)
     }
 }
