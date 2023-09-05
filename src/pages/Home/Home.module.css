@@ -1,5 +1,11 @@
 .content {
+    margin: 50px auto;
+    text-align: center;
+}
+
+.contentItem {
     display: flex;
     justify-content: center;
-    width: 100%;
+    margin: 50px auto;
+    max-width: 70%;
 }

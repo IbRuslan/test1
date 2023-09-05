@@ -8,15 +8,17 @@ type CartItemType = {
 
 export const CartItem: React.FC<CartItemType> = ({book, ...props}) => {
 
+    const image = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : ''
+
     return (
         <div className={s.item}>
-            <div>
-                <img src={book.volumeInfo.imageLinks.thumbnail} alt="book"/>
+            <div className={s.img}>
+                <img src={image} alt="book"/>
             </div>
             <div>
-                <span>{book.volumeInfo.categories[0]}</span>
+                <span>{book.volumeInfo.categories? book.volumeInfo.categories.join('/') : ''}</span>
                 <h2>{book.volumeInfo.title}</h2>
-                <span>{book.volumeInfo.authors[0]}</span>
+                <span>{book.volumeInfo.authors ? book.volumeInfo.authors[0] : ''}</span>
             </div>
         </div>
     );

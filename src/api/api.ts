@@ -1,8 +1,12 @@
 import axios from "axios";
+import {CategoriesType, SortType} from "../store/books-reducer";
 
 
 const instance = axios.create({
     baseURL: 'https://www.googleapis.com/books/v1/',
+	params: {
+		key: 'AIzaSyBRqmafvSVUByRtugHGCkQOsEfaw58VgzU'
+	}
 })
 
 export type ResponseBooks = {
@@ -18,7 +22,7 @@ export type BooksItem = {
 	selfLink: string;
 	volumeInfo: RootObjectVolumeInfo;
 	saleInfo: RootObjectSaleInfo;
-	accessInfo: RootObjectAccessInfo;
+	accessInfo?: RootObjectAccessInfo;
 	searchInfo: RootObjectSearchInfo;
 }
 export type RootObjectVolumeInfoIndustryIdentifiers = {
@@ -114,6 +118,9 @@ export type RootObjectSearchInfo = {
 
 export const BooksApi = {
     getBooks(title:string) {
-        return instance.get<ResponseBooks>(`volumes?q=intitle:${title}&key=AIzaSyBRqmafvSVUByRtugHGCkQOsEfaw58VgzU`)
-    }
+        return instance.get<ResponseBooks>(`volumes?q=intitle:${title}&startIndex=0&maxResults=30`)
+    },
+	getMoreBooks(title:string, number: number, categories: CategoriesType, sort: SortType) {
+		return instance.get<ResponseBooks>(`volumes?q=intitle:${title}&startIndex=${number}&maxResults=30`)
+	}
 }
