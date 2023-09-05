@@ -10,16 +10,18 @@ const initialState = {
     totalCount: 0,
     categories: 'All' as CategoriesType,
     sort: 'relevance' as SortType,
-    startIndex: 0
+    startIndex: 0,
+    search: ''
 }
 export type BooksState  = typeof initialState
 
 export const booksReducer = (state: BooksState = initialState, action: ActionBooksType): BooksState => {
+    debugger
     switch (action.type) {
         case "GET-NEW-BOOKS":
-            return {...state, totalCount: action.totalCount, books: action.books, startIndex: 0}
+            return {...state, totalCount: action.totalCount, search: action.title, books: action.books, startIndex: 0}
         case "GET-BOOKS":
-            return {...state, totalCount: action.totalCount, startIndex: action.indexNumber, books: [...state.books, ...action.books]}
+            return {...state, totalCount: state.totalCount += action.totalCount, startIndex: action.indexNumber, books: [...state.books, ...action.books]}
         case "CHANGE-CATEGORIES":
             return {...state, categories: action.categories}
         case "CHANGE-SORT":
@@ -36,8 +38,8 @@ export type ActionBooksType =
     | ReturnType<typeof getNewBooksAC>
     | setStatusAppAT
 
-export const getNewBooksAC = (books: BooksItem[], totalCount: number) => (
-    {type: 'GET-NEW-BOOKS', books, totalCount} as const
+export const getNewBooksAC = (books: BooksItem[], totalCount: number,  title: string) => (
+    {type: 'GET-NEW-BOOKS', books, totalCount, title} as const
 )
 export const getBooksAC = (books: BooksItem[], totalCount: number, indexNumber: number) => (
     {type: 'GET-BOOKS', books, totalCount, indexNumber} as const
@@ -53,7 +55,7 @@ export const GetBooksTC = (title: string) => (dispatch: Dispatch<ActionBooksType
     dispatch(setStatusAppAC(true))
     BooksApi.getBooks(title)
         .then(res => {
-            dispatch(getNewBooksAC(res.data.items, res.data.totalItems))
+            dispatch(getNewBooksAC(res.data.items, res.data.totalItems, title))
         })
         .finally(() => dispatch(setStatusAppAC(false)))
 }

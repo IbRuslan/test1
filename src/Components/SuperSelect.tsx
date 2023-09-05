@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {FormControl, InputLabel, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 import {CategoriesType, SortType} from "../store/books-reducer";
 
@@ -10,8 +10,6 @@ type SuperSelectType = {
 }
 
 export const SuperSelect: React.FC<SuperSelectType> = ({values, name, selected, ...props}) => {
-
-    // const [value, setValue] = useState(selected)
 
     const onChangeHandler = (event: SelectChangeEvent) => {
         props.callback(event.target.value as CategoriesType | SortType)
@@ -29,7 +27,7 @@ export const SuperSelect: React.FC<SuperSelectType> = ({values, name, selected, 
                 onChange={onChangeHandler}
             >
                 {
-                    values.map(v => <MenuItem key={v} value={v}>{v}</MenuItem>)
+                    values.map((v, i) => <MenuItem key={i} value={v}>{v}</MenuItem>)
                 }
             </Select>
         </FormControl>

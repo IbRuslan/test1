@@ -6,6 +6,7 @@ import s from './Search.module.css'
 import {SuperSelect} from "../SuperSelect";
 import {useAppDispatch, useAppSelector} from "../../store/store";
 import {CategoriesType, changeCategoriesBooksAC, changeSortBooksAC, SortType} from "../../store/books-reducer";
+import {NavLink} from "react-router-dom";
 
 type SearchType = {
     callback: (title: string) => void
@@ -46,9 +47,11 @@ export const Search: React.FC<SearchType> = ({callback}) => {
                         inputProps={{'aria-label': 'search google maps'}}
                         value={title} onChange={onChangeInputHandler}
                     />
-                    <IconButton type="button" sx={{p: '10px'}} aria-label="search" onClick={() => callback(title)}>
-                        <SearchIcon/>
-                    </IconButton>
+                    <NavLink to={'/books'}>
+                        <IconButton type="button" sx={{p: '10px'}} aria-label="search" onClick={() => callback(title)}>
+                            <SearchIcon/>
+                        </IconButton>
+                    </NavLink>
                 </Paper>
                 <div className={s.selects}>
                     <SuperSelect values={categories} name={'Categories'} selected={selectedCategories} callback={changeCategories}/>
