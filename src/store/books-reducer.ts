@@ -2,13 +2,13 @@ import {Dispatch} from "redux";
 import {BooksApi, BooksItem} from "../api/api";
 import {setStatusAppAC, setStatusAppAT} from "./app-reducer";
 
-export type CategoriesType = 'all' | 'art' | 'biography' | 'computers' | 'history' | 'medical' | 'poetry'
+export type CategoriesType = 'All' | 'Art' | 'Biography' | 'Computers' | 'History' | 'Medical' | 'Poetry'
 export type SortType = 'relevance' | 'newest'
 
 const initialState = {
     books: [] as BooksItem[],
     totalCount: 0,
-    categories: 'all' as CategoriesType,
+    categories: 'All' as CategoriesType,
     sort: 'relevance' as SortType,
     startIndex: 0
 }

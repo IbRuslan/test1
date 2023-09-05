@@ -9,14 +9,12 @@ type SuperSelectType = {
     callback: (value: string) => void
 }
 
-export const SuperSelect: React.FC<SuperSelectType> = ({values, name, selected}) => {
+export const SuperSelect: React.FC<SuperSelectType> = ({values, name, selected, ...props}) => {
 
-    const [value, setValue] = useState(selected)
+    // const [value, setValue] = useState(selected)
 
     const onChangeHandler = (event: SelectChangeEvent) => {
-        if(event.target.value) {
-            setValue(event.target.value as CategoriesType | SortType)
-        }
+        props.callback(event.target.value as CategoriesType | SortType)
     }
 
     return (
@@ -27,7 +25,7 @@ export const SuperSelect: React.FC<SuperSelectType> = ({values, name, selected})
                 id="demo-simple-select"
                 label={name}
                 sx={{ backgroundColor: 'white' }}
-                value={value}
+                value={selected}
                 onChange={onChangeHandler}
             >
                 {

@@ -20,7 +20,7 @@ export const Search: React.FC<SearchType> = ({callback}) => {
 
     const dispatch = useAppDispatch()
 
-    const categories: CategoriesType[] = ['all', 'art', 'biography', 'computers', 'history', 'medical', 'poetry']
+    const categories: CategoriesType[] = ['All', 'Art', 'Biography', 'Computers', 'History', 'Medical', 'Poetry']
     const sort: SortType[] = ['relevance', 'newest']
 
     const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {

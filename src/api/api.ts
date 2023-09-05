@@ -121,6 +121,6 @@ export const BooksApi = {
         return instance.get<ResponseBooks>(`volumes?q=intitle:${title}&startIndex=0&maxResults=30`)
     },
 	getMoreBooks(title:string, number: number, categories: CategoriesType, sort: SortType) {
-		return instance.get<ResponseBooks>(`volumes?q=intitle:${title}&startIndex=${number}&maxResults=30`)
+		return instance.get<ResponseBooks>(`volumes?q=intitle:${title}&orderBy=${sort}&startIndex=${number}&maxResults=30`)
 	}
 }
