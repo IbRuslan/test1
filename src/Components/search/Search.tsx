@@ -1,5 +1,5 @@
 import {IconButton, Paper} from '@mui/material';
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, KeyboardEventHandler, useState} from 'react';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import s from './Search.module.css'
@@ -35,6 +35,13 @@ export const Search: React.FC<SearchType> = ({callback}) => {
         dispatch(changeSortBooksAC(value as SortType))
     }
 
+    const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+        if(event.key === 'Enter') {
+            callback(title)
+            event.preventDefault()
+        }
+    }
+
     return (
         <div className={s.container}>
             <div className={s.content}>
@@ -46,6 +53,7 @@ export const Search: React.FC<SearchType> = ({callback}) => {
                         placeholder="Search Google Books"
                         inputProps={{'aria-label': 'search google maps'}}
                         value={title} onChange={onChangeInputHandler}
+                        onKeyDown={onKeyDownHandler}
                     />
                     <NavLink to={'/books'}>
                         <IconButton type="button" sx={{p: '10px'}} aria-label="search" onClick={() => callback(title)}>
