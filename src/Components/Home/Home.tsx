@@ -1,6 +1,6 @@
 import React from 'react';
 import s from './Home.module.css'
-import {Search} from "../../Components/search/Search";
+import {Search} from "../search/Search";
 import {useAppDispatch, useAppSelector} from "../../store/store";
 import {GetBooksTC} from "../../store/books-reducer";
 import {LinearProgress} from "@mui/material";

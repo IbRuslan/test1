@@ -1,6 +1,7 @@
 import {Dispatch} from "redux";
 import {BooksApi, BooksItem} from "../api/api";
-import {setStatusAppAC, setStatusAppAT} from "./app-reducer";
+import {setErrorAC, setErrorAT, setStatusAppAC, setStatusAppAT} from "./app-reducer";
+import {isAxiosError} from "axios";
 
 export type CategoriesType = 'All' | 'Art' | 'Biography' | 'Computers' | 'History' | 'Medical' | 'Poetry'
 export type SortType = 'relevance' | 'newest'
@@ -16,7 +17,6 @@ const initialState = {
 export type BooksState  = typeof initialState
 
 export const booksReducer = (state: BooksState = initialState, action: ActionBooksType): BooksState => {
-    debugger
     switch (action.type) {
         case "GET-NEW-BOOKS":
             return {...state, totalCount: action.totalCount, search: action.title, books: action.books, startIndex: 0}
@@ -37,6 +37,7 @@ export type ActionBooksType =
     | ReturnType<typeof changeSortBooksAC>
     | ReturnType<typeof getNewBooksAC>
     | setStatusAppAT
+    | setErrorAT
 
 export const getNewBooksAC = (books: BooksItem[], totalCount: number,  title: string) => (
     {type: 'GET-NEW-BOOKS', books, totalCount, title} as const
@@ -57,6 +58,17 @@ export const GetBooksTC = (title: string) => (dispatch: Dispatch<ActionBooksType
         .then(res => {
             dispatch(getNewBooksAC(res.data.items, res.data.totalItems, title))
         })
+        .catch(e => {
+            let errorMessage = ''
+            if(isAxiosError(e)) {
+                errorMessage = e.response
+                    ? e.response.data.error.message
+                    : e.message
+            } else {
+                errorMessage = (e as Error).message
+            }
+            dispatch(setErrorAC(errorMessage))
+        })
         .finally(() => dispatch(setStatusAppAC(false)))
 }
 export const GetMoreBooksTC = (title: string, indexNumber: number, categories: CategoriesType, sort: SortType) => (dispatch: Dispatch<ActionBooksType>) => {
@@ -65,5 +77,17 @@ export const GetMoreBooksTC = (title: string, indexNumber: number, categories: C
         .then(res => {
             dispatch(getBooksAC(res.data.items, res.data.totalItems, indexNumber))
         })
+        .catch(e => {
+            let errorMessage = ''
+            if(isAxiosError(e)) {
+                errorMessage = e.response
+                    ? e.response.data.error.message
+                    : e.message
+            } else {
+                errorMessage = (e as Error).message
+            }
+            dispatch(setErrorAC(errorMessage))
+        })
         .finally(() => dispatch(setStatusAppAC(false)))
 }
+

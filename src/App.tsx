@@ -1,14 +1,15 @@
 import React from 'react';
-import Home from "./pages/Home/Home";
+import Home from "./Components/Home/Home";
 import {Navigate, Route, Routes} from "react-router-dom";
 import NotFound from "./pages/NotFound";
 import BookDetails from "./pages/BookDetails/BookDetails";
 import BooksLists from "./pages/BooksLists/BooksLists";
+import {GlobalError} from "./Components/GlobalError/GlobalError";
 
 
 const App = () => {
     return (
-        <div className="wrapper">
+        <div>
             <Home/>
             <div className="content">
                     <Routes>
@@ -18,6 +19,7 @@ const App = () => {
                         <Route path={'*'} element={<NotFound/>} />
                     </Routes>
             </div>
+            <GlobalError/>
         </div>
     );
 };
